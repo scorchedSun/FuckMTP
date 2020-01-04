@@ -8,6 +8,6 @@ namespace FuckMTP.Core.Contracts
         IList<IFile> Files { get; }
         Mode Mode { get; }
         BehaviorRegardingDuplicates BehaviorRegardingDuplicates { get; }
-        Path Target { get; }
+        string TargetPath { get; }
     }
 }

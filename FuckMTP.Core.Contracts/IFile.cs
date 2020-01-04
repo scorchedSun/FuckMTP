@@ -9,6 +9,6 @@ namespace FuckMTP.Core.Contracts
     {
         string Name { get; }
 
-        Path Path { get; }
+        string Path { get; }
     }
 }

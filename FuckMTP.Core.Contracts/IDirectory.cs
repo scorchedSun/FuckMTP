@@ -9,7 +9,7 @@ namespace FuckMTP.Core.Contracts
     {
         string Name { get; }
 
-        Path Path { get; }
+        string Path { get; }
 
         IEnumerable<IDirectory> Directories { get; }
         IEnumerable<IFile> Files { get; }

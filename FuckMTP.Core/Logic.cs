@@ -26,7 +26,7 @@ namespace FuckMTP.Core
                 IDirectory rootDirectory;
                 using (IBusyIndicator busyIndicator = interactor.SetBusy())
                 {
-                    rootDirectory = deviceConnector.GetFileMetadata();
+                    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
                 }
 
                 IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
@@ -53,10 +53,10 @@ namespace FuckMTP.Core
             switch (operation.Mode)
             {
                 case Mode.Copy:
-                    deviceConnector.CopyFiles(operation.Files, operation.Target, operation.BehaviorRegardingDuplicates);
+                    deviceConnector.CopyFiles(operation.Files, operation.TargetPath, operation.BehaviorRegardingDuplicates);
                     break;
                 case Mode.Move:
-                    deviceConnector.MoveFiles(operation.Files, operation.Target, operation.BehaviorRegardingDuplicates);
+                    deviceConnector.MoveFiles(operation.Files, operation.TargetPath, operation.BehaviorRegardingDuplicates);
                     break;
             }
         }

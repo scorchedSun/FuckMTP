@@ -9,8 +9,8 @@ namespace FuckMTP.Core.Contracts
     {
         IList<IDevice> GetConnectedDevices();
         void UseDevice(IDevice device);
-        IDirectory GetFileMetadata();
-        void CopyFiles(IList<IFile> files, Path target, BehaviorRegardingDuplicates behaviorRegardingDuplicates);
-        void MoveFiles(IList<IFile> files, Path target, BehaviorRegardingDuplicates behaviorRegardingDuplicates);
+        IDirectory ReadMetadataOfAllFiles();
+        void CopyFiles(IList<IFile> files, string targetPath, BehaviorRegardingDuplicates behaviorRegardingDuplicates);
+        void MoveFiles(IList<IFile> files, string targetPath, BehaviorRegardingDuplicates behaviorRegardingDuplicates);
     }
 }
