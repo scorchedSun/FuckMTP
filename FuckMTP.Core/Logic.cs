@@ -42,6 +42,10 @@ namespace FuckMTP.Core
             {
                 interactor.NotifyNoDeviceConnected();
             }
+            catch (NoDeviceSelectedException)
+            {
+                interactor.NotifyNoDeviceSelected();
+            }
             catch (ExecutionFailedException ex)
             {
                 interactor.NotifyFileOperationFailed(ex.Message);
@@ -68,7 +72,11 @@ namespace FuckMTP.Core
             if (connectedDevices.Count == 1)
                 return connectedDevices[0];
             else if (connectedDevices.Count > 1)
-                return interactor.SelectOneDevice(connectedDevices);
+            {
+                IDevice selectedDevice = interactor.SelectOneDevice(connectedDevices);
+                if (selectedDevice is null)
+                    throw new NoDeviceSelectedException();
+            }
 
             throw new NoDeviceConnectedException();
         }

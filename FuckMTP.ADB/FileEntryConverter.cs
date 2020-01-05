@@ -1,24 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using FuckMTP.Core.Contracts;
 using Managed.Adb;
 
 namespace FuckMTP.ADB
 {
 
-    internal static class FileRootConverter
+    internal static class FileEntryConverter
     {
-        public static IDirectory Convert(FileEntry entry)
+        public static IDirectory Convert(List<FileEntry> entries)
         {
             DirectoryDto root = new DirectoryDto
             {
-                Name = entry.Name,
-                Path = entry.FullPath
+                Name = "data",
+                Path = "/"
             };
 
-            FillRecursively(root, entry.Children);
+            FillRecursively(root, entries);
 
             return root;
         }

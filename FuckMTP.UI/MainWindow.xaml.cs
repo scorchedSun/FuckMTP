@@ -3,18 +3,8 @@ using FuckMTP.Core;
 using FuckMTP.Core.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FuckMTP.UI
 {
@@ -28,7 +18,7 @@ namespace FuckMTP.UI
         public MainWindow()
         {
             InitializeComponent();
-            logic = new Logic(new DeviceConnector(), this);
+            logic = new Logic(new DeviceConnector(@"C:\adb\adb.exe"), this);
             logic.Run();
         }
 
@@ -39,27 +29,53 @@ namespace FuckMTP.UI
 
         public void NotifyFileOperationFailed(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Operation failed", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void NotifyNoDeviceConnected()
         {
-            throw new NotImplementedException();
+            MessageBox.Show("No device connected!");
+        }
+
+        public void NotifyNoDeviceSelected()
+        {
+            MessageBox.Show("No device selected!");
         }
 
         public void NotifySuccess(IFileOperation operation)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("Operation finished successfully!");
         }
 
-        public IDevice SelectOneDevice(object devices)
+        public IDevice SelectOneDevice(IList<IDevice> devices)
         {
-            throw new NotImplementedException();
+            DeviceSelector deviceSelector = new DeviceSelector(devices);
+            deviceSelector.ShowDialog();
+
+            return deviceSelector.SelectedDevice;
         }
 
         public IBusyIndicator SetBusy()
         {
-            throw new NotImplementedException();
+            return new BusyIndicator(this);
+        }
+
+        private class BusyIndicator : IBusyIndicator
+        {
+            private readonly Window window;
+            private readonly Cursor previousCursor;
+
+            public BusyIndicator(Window window)
+            {
+                this.window = window ?? throw new ArgumentNullException(nameof(window));
+                previousCursor = this.window.Cursor;
+                this.window.Cursor = Cursors.Wait;
+            }
+
+            public void Dispose()
+            {
+                window.Cursor = previousCursor;
+            }
         }
     }
 }
