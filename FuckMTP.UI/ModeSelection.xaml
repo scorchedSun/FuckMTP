@@ -1,0 +1,33 @@
+﻿<Window x:Class="FuckMTP.UI.ModeSelection"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FuckMTP.UI"
+        mc:Ignorable="d"
+        Title="Modus auswählen" Height="180" Width="400" ResizeMode="NoResize" Closing="Window_Closing" Topmost="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Modus:"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" FlowDirection="LeftToRight" Orientation="Horizontal">
+            <RadioButton x:Name="rbtnCopy" Margin="5" Content="Kopieren" IsChecked="True"/>
+            <RadioButton x:Name="rbtnMove" Margin="5" Content="Verschieben"/>
+        </StackPanel>
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="Verhalten bei Duplikaten:"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" FlowDirection="LeftToRight" Orientation="Vertical">
+            <RadioButton x:Name="rbtnIgnore" Margin="5" Content="Nicht kopieren" IsChecked="True"/>
+            <RadioButton x:Name="rbtnWithSuffix" Margin="5" Content="Mit Nummerierung"/>
+            <RadioButton x:Name="rbtnOverwrite" Margin="5" Content="Überschreiben"/>
+        </StackPanel>
+        <Button x:Name="btnAbort" Grid.Row="2" Grid.Column="1" Margin="0,5,85,5" Content="Abbrechen" Width="75" HorizontalAlignment="Right" Click="btnAbort_Click"/>
+        <Button x:Name="btnOk" Grid.Row="2" Grid.Column="1" Margin="0,5,5,5" Content="OK" Width="75" HorizontalAlignment="Right" Click="btnOk_Click"/>
+    </Grid>
+</Window>

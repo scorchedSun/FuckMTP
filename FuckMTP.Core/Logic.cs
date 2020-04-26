@@ -6,12 +6,10 @@ namespace FuckMTP.Core
 {
     public class Logic
     {
-        private readonly IDeviceConnector deviceConnector;
         private readonly IInteractor interactor;
 
-        public Logic(IDeviceConnector deviceConnector, IInteractor interactor)
+        public Logic(IInteractor interactor)
         {
-            this.deviceConnector = deviceConnector ?? throw new ArgumentNullException(nameof(deviceConnector));
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
         }
 
@@ -19,66 +17,79 @@ namespace FuckMTP.Core
         {
             try
             {
-                IDevice device = SelectDevice();
+                IList<IFile> files = interactor.GetFiles();
 
-                deviceConnector.UseDevice(device);
+                string target = interactor.GetTargetPath();
 
-                IDirectory rootDirectory;
-                using (IBusyIndicator busyIndicator = interactor.SetBusy())
+                if (string.IsNullOrWhiteSpace(target))
                 {
-                    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
+                    interactor.NotifyNoFolderSelected();
+                    return;
                 }
 
-                IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
+                IOperationConfiguration configuration = interactor.GetOperationConfiguration();
 
-                using (IBusyIndicator busyIndicator = interactor.SetBusy())
-                {
-                    Execute(operation);
-                }
+                //IDirectory rootDirectory;
+                //using (IBusyIndicator busyIndicator = interactor.SetBusy())
+                //{
+                //    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
+                //}
 
-                interactor.NotifySuccess(operation);
+                //IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
+
+                //using (IBusyIndicator busyIndicator = interactor.SetBusy())
+                //{
+                //    Execute(operation);
+                //}
+
+                //interactor.NotifySuccess(operation);
             }
-            catch (NoDeviceConnectedException)
+            catch (FileSelectionAbortedException)
             {
-                interactor.NotifyNoDeviceConnected();
+                interactor.NotifyFileSelectionAborted();
             }
-            catch (NoDeviceSelectedException)
+            catch (NoFolderSelectedException)
             {
-                interactor.NotifyNoDeviceSelected();
+                interactor.NotifyNoFolderSelected();
             }
-            catch (ExecutionFailedException ex)
+            catch (ConfigurationAbortedException)
             {
-                interactor.NotifyFileOperationFailed(ex.Message);
+                interactor.NotifyConfigurationAborted();
             }
         }
 
-        private void Execute(IFileOperation operation)
+        private bool DetermineIsLocalCopy()
         {
-            switch (operation.Mode)
-            {
-                case Mode.Copy:
-                    deviceConnector.CopyFiles(operation.Files, operation.TargetPath, operation.BehaviorRegardingDuplicates);
-                    break;
-                case Mode.Move:
-                    deviceConnector.MoveFiles(operation.Files, operation.TargetPath, operation.BehaviorRegardingDuplicates);
-                    break;
-            }
+            return false;
         }
 
-        private IDevice SelectDevice()
-        {
-            IList<IDevice> connectedDevices = deviceConnector.GetConnectedDevices();
+        //private void Execute(IFileOperation operation)
+        //{
+        //    switch (operation.Configuration.Mode)
+        //    {
+        //        case Mode.Copy:
+        //            deviceConnector.CopyFiles(operation.Files, operation.TargetPath, operation.Configuration.BehaviorRegardingDuplicates);
+        //            break;
+        //        case Mode.Move:
+        //            deviceConnector.MoveFiles(operation.Files, operation.TargetPath, operation.Configuration.BehaviorRegardingDuplicates);
+        //            break;
+        //    }
+        //}
 
-            if (connectedDevices.Count == 1)
-                return connectedDevices[0];
-            else if (connectedDevices.Count > 1)
-            {
-                IDevice selectedDevice = interactor.SelectOneDevice(connectedDevices);
-                if (selectedDevice is null)
-                    throw new NoDeviceSelectedException();
-            }
+        //private IDevice SelectDevice()
+        //{
+        //    IList<IDevice> connectedDevices = deviceConnector.GetConnectedDevices();
 
-            throw new NoDeviceConnectedException();
-        }
+        //    if (connectedDevices.Count == 1)
+        //        return connectedDevices[0];
+        //    else if (connectedDevices.Count > 1)
+        //    {
+        //        IDevice selectedDevice = interactor.SelectOneDevice(connectedDevices);
+        //        if (selectedDevice is null)
+        //            throw new NoDeviceSelectedException();
+        //    }
+
+        //    throw new NoDeviceConnectedException();
+        //}
     }
 }

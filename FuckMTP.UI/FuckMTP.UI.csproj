@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1090F703-BF95-4E2A-B086-D84A50629011}</ProjectGuid>
@@ -16,7 +17,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -77,17 +78,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileDropViewModel.cs" />
+    <Compile Include="ObservableSet.cs" />
+    <Compile Include="PropertyChangedNotifier.cs" />
     <Page Include="DeviceSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileDrop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileOperationBuilder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -96,15 +100,21 @@
     <Compile Include="DeviceSelector.xaml.cs">
       <DependentUpon>DeviceSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileDrop.xaml.cs">
+      <DependentUpon>FileDrop.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileOperationBuilder.xaml.cs">
       <DependentUpon>FileOperationBuilder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="ModeSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModeSelection.xaml.cs">
+      <DependentUpon>ModeSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -136,12 +146,8 @@
       <Name>FuckMTP.ADB</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
-      <Project>{0F0BD7F2-2E35-48C8-BCA3-07281A596641}</Project>
+      <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
       <Name>FuckMTP.Core.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
-      <Project>{13206A5D-33B6-4579-ABB0-FE972003F42D}</Project>
-      <Name>FuckMTP.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97A9E1DA-3965-4F66-B6E0-18D788DC3133}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FuckMTP.Core</RootNamespace>
-    <AssemblyName>FuckMTP.Core</AssemblyName>
+    <ProjectGuid>{197D1D07-9ECC-4BBB-B761-484BA8BDE9B9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FuckMTP</RootNamespace>
+    <AssemblyName>FuckMTP</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,25 +33,40 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logic.cs" />
-    <Compile Include="NoDeviceConnectedException.cs" />
-    <Compile Include="NoDeviceSelectedException.cs" />
+    <Compile Include="File.cs" />
+    <Compile Include="Interactor.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
       <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
       <Name>FuckMTP.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
+      <Project>{97A9E1DA-3965-4F66-B6E0-18D788DC3133}</Project>
+      <Name>FuckMTP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuckMTP.UI\FuckMTP.UI.csproj">
+      <Project>{1090F703-BF95-4E2A-B086-D84A50629011}</Project>
+      <Name>FuckMTP.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

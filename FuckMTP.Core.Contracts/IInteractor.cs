@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace FuckMTP.Core.Contracts
 {
+
     public interface IInteractor
     {
-        IDevice SelectOneDevice(IList<IDevice> devices);
-        void NotifyNoDeviceConnected();
-        IFileOperation CreateFileOperation(IDirectory rootDirectory);
-        IBusyIndicator SetBusy();
-        void NotifyFileOperationFailed(string message);
-        void NotifySuccess(IFileOperation operation);
-        void NotifyNoDeviceSelected();
+        string GetTargetPath();
+        IOperationConfiguration GetOperationConfiguration();
+
+        void NotifyNoFolderSelected();
+
+        void NotifyConfigurationAborted();
+        IList<IFile> GetFiles();
+        void NotifyFileSelectionAborted();
     }
 }
