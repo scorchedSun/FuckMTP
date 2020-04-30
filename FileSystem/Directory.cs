@@ -4,7 +4,7 @@ using System.IO;
 
 namespace FileSystem
 {
-    public class Directory
+    public class Directory : IFileSystemEntry
     {
         public string Name { get; }
 
@@ -22,7 +22,7 @@ namespace FileSystem
             Parent = parent;
         }
 
-        public void AddFile(string name)
-            => Files.Add(new File(Path.GetFileName(name), Path.GetExtension(name), this));
+
+        public string GetPath() => Parent is null ? Name : Path.Combine(Parent.GetPath(), Name);
     }
 }

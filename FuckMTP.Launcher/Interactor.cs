@@ -1,5 +1,8 @@
-﻿using FuckMTP.Core.Contracts;
+﻿using FileSystem;
+using FuckMTP.Core.Contracts;
+using FuckMTP.DeviceConnector.Contracts;
 using FuckMTP.UI;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,16 +10,45 @@ using System.Windows.Forms;
 
 namespace FuckMTP
 {
-    internal sealed class Interactor : IInteractor
+    internal sealed class Interactor : IInteractor, IDisposable
     {
+        private readonly IDeviceSource deviceSource;
+        private IDevice selectedDevice;
+        private bool disposed;
+
+        public Interactor(IDeviceSource deviceSource)
+            => this.deviceSource = deviceSource ?? throw new ArgumentNullException(nameof(deviceSource));
+
+        ~Interactor() => Dispose();
+
         public IList<IFile> GetFiles()
         {
-            FileDrop fileDrop = new FileDrop();
+            selectedDevice?.Dispose();
 
-            if (fileDrop.ShowDialog().Value && fileDrop.Files.Any())
-                return fileDrop.Files.Select(path => new File(path)).Cast<IFile>().ToList();
-            throw new FileSelectionAbortedException();
+            selectedDevice = SelectDevice();
+
+            FileBrowser fileBrowser = new FileBrowser(selectedDevice);
+            fileBrowser.ShowDialog();
+
+            return null;
         }
+
+        private IDevice SelectDevice()
+        {
+            IList<IDevice> availableDevices = deviceSource.GetAvailableDevices().ToList();
+
+            if (availableDevices.Count == 0)
+                throw new NoDeviceConnectedException();
+            else if (availableDevices.Count == 1)
+                return availableDevices.First();
+
+            DeviceSelector deviceSelector = new DeviceSelector(availableDevices);
+
+            if (deviceSelector.ShowDialog().Value && deviceSelector.SelectedDevice != null)
+                return deviceSelector.SelectedDevice;
+            throw new NoDeviceSelectedException();
+        }
+
 
         public IOperationConfiguration GetOperationConfiguration()
         {
@@ -48,5 +80,14 @@ namespace FuckMTP
 
         public void NotifyNoFolderSelected()
             => MessageBox.Show("Es wurde kein Zielordner ausgewählt. Der Vorgang wird abgebrochen.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+        public void Dispose()
+        {
+            if (disposed) return;
+
+            selectedDevice.Dispose();
+            disposed = true;
+            GC.SuppressFinalize(this);
+        }
     }
 }

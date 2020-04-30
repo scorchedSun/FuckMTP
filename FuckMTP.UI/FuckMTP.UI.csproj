@@ -78,10 +78,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileBrowser.xaml.cs">
+      <DependentUpon>FileBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileBrowserViewModel.cs" />
     <Compile Include="FileDropViewModel.cs" />
+    <Compile Include="ObservableEntry.cs" />
     <Compile Include="ObservableSet.cs" />
     <Compile Include="PropertyChangedNotifier.cs" />
     <Page Include="DeviceSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,6 +150,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj">
+      <Project>{3AB63EDA-8ABD-4EF7-8A7A-4E6A9A614942}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.ADB\FuckMTP.ADB.csproj">
       <Project>{A5554E40-6DB0-4261-AD5B-CB883EF75FC2}</Project>
       <Name>FuckMTP.ADB</Name>
@@ -148,6 +161,10 @@
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
       <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
       <Name>FuckMTP.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj">
+      <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
+      <Name>FuckMTP.DeviceConnector.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

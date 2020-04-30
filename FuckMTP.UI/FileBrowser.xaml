@@ -1,22 +1,22 @@
-﻿<Window x:Class="FuckMTP.UI.DeviceSelector"
+﻿<Window x:Class="FuckMTP.UI.FileBrowser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FuckMTP.UI"
         mc:Ignorable="d"
-        Title="Gerät wählen" Height="450" Width="800" ResizeMode="NoResize">
+        Title="Dateiauswahl" Height="450" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label HorizontalAlignment="Left" Content="Ein Gerät auswählen:"/>
-        <ListBox x:Name="lbDevices" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding Devices, Mode=OneWay}" DisplayMemberPath="Name" MouseDoubleClick="lbDevices_MouseDoubleClick"/>
+        <TextBlock x:Name="tblLocation" Grid.Row="0" Margin="5"/>
+        <StackPanel x:Name="spFiles" Grid.Row="1" FlowDirection="LeftToRight" Orientation="Horizontal"/>
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button x:Name="btnOK" Content="OK" Margin="5" Width="70" Click="btnOK_Click"/>
             <Button x:Name="btnAbort" Content="Abbrechen" Margin="5" Width="70" Click="btnAbort_Click"/>
+            <Button x:Name="btnOK" Content="OK" Margin="5" Width="70" Click="btnOK_Click"/>
         </StackPanel>
     </Grid>
 </Window>

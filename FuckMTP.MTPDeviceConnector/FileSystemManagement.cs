@@ -6,46 +6,20 @@ namespace FuckMTP.MTPDeviceConnector
 {
     internal static class FileSystemManagement
     {
-        public static FileSystem.Directory LoadFrom(MediaDevice device)
+        public static IEnumerable<FileSystem.Directory> GetSubdirectories(MediaDevice device, FileSystem.Directory directory)
         {
-            if (!device.IsConnected)
-                device.Connect();
+            string path = directory.GetPath();
 
-            try
-            {
-                MediaDirectoryInfo rootInfo = device.GetRootDirectory();
-                FileSystem.Directory root = new FileSystem.Directory(rootInfo.Name);
+            foreach (string subdirectory in device.EnumerateDirectories(path))
+                yield return new FileSystem.Directory(subdirectory.Replace(path, string.Empty), directory);
+        }
 
-                var queue = new Queue<string>();
-                queue.Enqueue(rootInfo.FullName);
-                Dictionary<string, FileSystem.Directory> pathToDirectory = new Dictionary<string, FileSystem.Directory>();
-                pathToDirectory[rootInfo.FullName] = root;
+        public static IEnumerable<FileSystem.File> GetFiles(MediaDevice device, FileSystem.Directory directory)
+        {
+            string path = directory.GetPath();
 
-                do
-                {
-                    string path = queue.Dequeue();
-                    FileSystem.Directory directory = pathToDirectory[path];
-
-                    foreach (string subpath in device.EnumerateDirectories(path))
-                    {
-                        string subDirectoryPath = Path.Combine(path, subpath);
-                        FileSystem.Directory subDirectory = new FileSystem.Directory(subpath);
-                        pathToDirectory[subDirectoryPath] = subDirectory;
-                        directory.Children.Add(subDirectory);
-                        queue.Enqueue(subDirectoryPath);
-                    }
-
-                    foreach (string name in device.EnumerateFiles(path))
-                        directory.AddFile(name);
-
-                } while (queue.Count > 0);
-
-                return root;
-            }
-            finally
-            {
-                device.Disconnect();
-            }
+            foreach (string file in device.EnumerateFiles(path))
+                yield return new FileSystem.File(file.Replace(path, string.Empty), directory);
         }
     }
 }

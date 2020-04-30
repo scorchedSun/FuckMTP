@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Device.cs" />
-    <Compile Include="DeviceConverter.cs" />
     <Compile Include="DeviceSource.cs" />
     <Compile Include="FileSystemManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

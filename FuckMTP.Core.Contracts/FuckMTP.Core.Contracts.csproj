@@ -46,8 +46,6 @@
     <Compile Include="ExecutionFailedException.cs" />
     <Compile Include="FileSelectionAbortedException.cs" />
     <Compile Include="IBusyIndicator.cs" />
-    <Compile Include="IDevice.cs" />
-    <Compile Include="IDeviceConnector.cs" />
     <Compile Include="IDirectory.cs" />
     <Compile Include="IFile.cs" />
     <Compile Include="IFileOperation.cs" />

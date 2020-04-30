@@ -47,8 +47,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="File.cs" />
     <Compile Include="Interactor.cs" />
+    <Compile Include="NoDeviceConnectedException.cs" />
+    <Compile Include="NoDeviceSelectedException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,6 +57,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj">
+      <Project>{3AB63EDA-8ABD-4EF7-8A7A-4E6A9A614942}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
       <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
       <Name>FuckMTP.Core.Contracts</Name>
@@ -63,6 +68,14 @@
     <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
       <Project>{97A9E1DA-3965-4F66-B6E0-18D788DC3133}</Project>
       <Name>FuckMTP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj">
+      <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
+      <Name>FuckMTP.DeviceConnector.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuckMTP.MTPDeviceConnector\FuckMTP.MTPDeviceConnector.csproj">
+      <Project>{2BF0D1CB-A550-4C86-820E-4298B519AAB9}</Project>
+      <Name>FuckMTP.MTPDeviceConnector</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.UI\FuckMTP.UI.csproj">
       <Project>{1090F703-BF95-4E2A-B086-D84A50629011}</Project>

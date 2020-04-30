@@ -1,4 +1,6 @@
 ﻿using FuckMTP.Core;
+using FuckMTP.DeviceConnector.Contracts;
+using FuckMTP.MTPDeviceConnector;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -35,8 +37,11 @@ namespace FuckMTP
 
             try
             {
-                Logic logic = new Logic(new Interactor());
-                logic.Run();
+                using (Interactor interactor = new Interactor(new DeviceSource()))
+                {
+                    Logic logic = new Logic(new Interactor(new DeviceSource()));
+                    logic.Run();
+                }
             }
             catch (Exception ex)
             {
