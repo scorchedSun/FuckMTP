@@ -1,6 +1,5 @@
 ﻿using FileSystem;
 using System;
-using System.Collections.Generic;
 
 namespace FuckMTP.DeviceConnector.Contracts
 {
@@ -10,7 +9,7 @@ namespace FuckMTP.DeviceConnector.Contracts
 
         Lazy<Directory> Root { get; }
 
-        IEnumerable<Directory> GetSubdirectories(Directory directory);
-        IEnumerable<File> GetFiles(Directory directory);
+        void FillSubdirectories(Directory directory);
+        void FillFiles(Directory directory);
     }
 }

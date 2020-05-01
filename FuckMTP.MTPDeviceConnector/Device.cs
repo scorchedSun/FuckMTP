@@ -25,16 +25,16 @@ namespace FuckMTP.MTPDeviceConnector
 
         public static IDevice Create(MediaDevice mediaDevice) => new Device(mediaDevice);
 
-        public IEnumerable<Directory> GetSubdirectories(Directory directory)
+        public void FillSubdirectories(Directory directory)
         {
             EnsureIsConnected();
-            return FileSystemManagement.GetSubdirectories(mediaDevice, directory);
+            FileSystemManagement.FillSubdirectories(mediaDevice, directory);
         }
 
-        public IEnumerable<File> GetFiles(Directory directory)
+        public void FillFiles(Directory directory)
         {
             EnsureIsConnected();
-            return FileSystemManagement.GetFiles(mediaDevice, directory);
+            FileSystemManagement.FillFiles(mediaDevice, directory);
         }
 
         private Directory LoadRoot()

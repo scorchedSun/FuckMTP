@@ -5,15 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FuckMTP.UI"
         mc:Ignorable="d"
-        Title="Dateiauswahl" Height="450" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="Dateiauswahl" Height="450" Width="770" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="tblLocation" Grid.Row="0" Margin="5"/>
-        <StackPanel x:Name="spFiles" Grid.Row="1" FlowDirection="LeftToRight" Orientation="Horizontal"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="tblLocation" Text="{Binding CurrentPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Margin="5"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="btnPrevious" Margin="5" Content="Prev" Width="35" IsEnabled="{Binding PreviousEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Click="btnPrevious_Click"/>
+                <Button x:Name="btnNext" Margin="5" Content="Next" Width="35" IsEnabled="{Binding NextEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Click="btnNext_Click"/>
+            </StackPanel>
+        </Grid>        
+        <ListBox x:Name="lbFiles" Grid.Row="1" MouseDoubleClick="lbFiles_MouseDoubleClick" ItemsSource="{Binding FileSystemControls, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDirectory, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" FlowDirection="LeftToRight" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button x:Name="btnAbort" Content="Abbrechen" Margin="5" Width="70" Click="btnAbort_Click"/>
             <Button x:Name="btnOK" Content="OK" Margin="5" Width="70" Click="btnOK_Click"/>

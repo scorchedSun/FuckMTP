@@ -1,25 +1,25 @@
 ﻿using MediaDevices;
-using System.Collections.Generic;
-using System.IO;
 
 namespace FuckMTP.MTPDeviceConnector
 {
     internal static class FileSystemManagement
     {
-        public static IEnumerable<FileSystem.Directory> GetSubdirectories(MediaDevice device, FileSystem.Directory directory)
+        public static void FillSubdirectories(MediaDevice device, FileSystem.Directory directory)
         {
+            directory.Children.Clear();
             string path = directory.GetPath();
 
-            foreach (string subdirectory in device.EnumerateDirectories(path))
-                yield return new FileSystem.Directory(subdirectory.Replace(path, string.Empty), directory);
+            foreach (string subdirectoryPath in device.EnumerateDirectories(path))
+                directory.Children.Add(new FileSystem.Directory(subdirectoryPath.Replace(path, string.Empty).Trim('\\'), directory));
         }
 
-        public static IEnumerable<FileSystem.File> GetFiles(MediaDevice device, FileSystem.Directory directory)
+        public static void FillFiles(MediaDevice device, FileSystem.Directory directory)
         {
+            directory.Files.Clear();
             string path = directory.GetPath();
 
-            foreach (string file in device.EnumerateFiles(path))
-                yield return new FileSystem.File(file.Replace(path, string.Empty), directory);
+            foreach (string filePath in device.EnumerateFiles(path))
+                directory.Files.Add(new FileSystem.File(filePath.Replace(path, string.Empty).Trim('\\'), directory));
         }
     }
 }

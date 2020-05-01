@@ -78,10 +78,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DirectoryControl.xaml.cs">
+      <DependentUpon>DirectoryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileBrowser.xaml.cs">
       <DependentUpon>FileBrowser.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileBrowserViewModel.cs" />
+    <Compile Include="FileControl.xaml.cs">
+      <DependentUpon>FileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileDropViewModel.cs" />
     <Compile Include="ObservableEntry.cs" />
     <Compile Include="ObservableSet.cs" />
@@ -90,7 +96,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DirectoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,6 +180,25 @@
       <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
       <Name>FuckMTP.DeviceConnector.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Directory.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Directory.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Sources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\File.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="File.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -85,7 +85,11 @@ namespace FuckMTP
         {
             if (disposed) return;
 
-            selectedDevice.Dispose();
+            try
+            {
+                selectedDevice?.Dispose();
+            }
+            catch (Exception) {}
             disposed = true;
             GC.SuppressFinalize(this);
         }
