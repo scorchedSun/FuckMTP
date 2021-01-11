@@ -5,13 +5,12 @@ namespace FuckMTP.Core.Contracts
 
     public interface IInteractor
     {
-        string GetTargetPath();
+        void NotifyNoFilesSelected();
+
+        string SelectTargetPath();
+        void NotifyNoTargetPathSelected();
+
         IOperationConfiguration GetOperationConfiguration();
-
-        void NotifyNoFolderSelected();
-
-        void NotifyConfigurationAborted();
-        IList<IFile> GetFiles();
-        void NotifyFileSelectionAborted();
     }
+
 }

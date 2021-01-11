@@ -1,7 +1,9 @@
 ﻿using FuckMTP.Core;
+using FuckMTP.Core.Contracts;
 using FuckMTP.DeviceConnector.Contracts;
 using FuckMTP.MTPDeviceConnector;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -22,6 +24,39 @@ namespace FuckMTP
      * 
      */
 
+    internal sealed class DeviceFileSource : IFileSource, IDisposable
+    {
+        private readonly Interactor interactor;
+        private readonly IDevice device;
+        private bool disposed = false;
+
+        public DeviceFileSource(Interactor interactor, IDevice device)
+        {
+            this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
+            this.device = device ?? throw new ArgumentNullException(nameof(device));
+        }
+
+        ~DeviceFileSource()
+        {
+            Dispose();
+        }
+
+        public IReadOnlyList<IFile> SelectFiles() => interactor.SelectFilesFrom(device);
+
+        public void Dispose()
+        {
+            if (disposed) return;
+
+            try
+            {
+                device?.Dispose();
+            }
+            catch (Exception) { }
+            disposed = true;
+            GC.SuppressFinalize(this);
+        }
+    }
+
     internal static class Program
     {
         [DllImport("user32.dll")]
@@ -35,13 +70,23 @@ namespace FuckMTP
         {
             HideConsole();
 
+            Interactor interactor = new Interactor();
             try
             {
-                using (Interactor interactor = new Interactor(new DeviceSource()))
+                using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource()))
+                using(DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
                 {
-                    Logic logic = new Logic(new Interactor(new DeviceSource()));
+                    Logic logic = new Logic(interactor, fileSource);
                     logic.Run();
                 }
+            }
+            catch (NoDeviceConnectedException)
+            {
+                interactor.NotifyNoDeviceConnected();
+            }
+            catch (NoDeviceSelectedException)
+            {
+                interactor.NotifyNoDeviceSelected();
             }
             catch (Exception ex)
             {

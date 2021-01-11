@@ -1,7 +1,11 @@
-﻿using FileSystem;
+﻿using CommonExtensions;
+using FileSystem;
+using FuckMTP.Core.Contracts;
 using FuckMTP.DeviceConnector.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace FuckMTP.UI
@@ -92,16 +96,47 @@ namespace FuckMTP.UI
             FileSystemControls.Clear();
             CurrentDirectory = directory;
 
-            if (directory.Children.Count == 0)
-                device.FillSubdirectories(directory);
-            if (directory.Files.Count == 0)
-                device.FillFiles(directory);
+            EnsureContentsAreLoaded(directory);
 
             CurrentPath = System.IO.Path.Combine(device.Name, directory.GetPath());
             foreach (Directory subdirectory in directory.Children)
                 FileSystemControls.Add(new DirectoryControl(subdirectory));
             foreach (File file in directory.Files)
                 FileSystemControls.Add(new FileControl(file));
+        }
+
+        public IReadOnlyCollection<File> GetFiles()
+        {
+            EnsureContentsAreLoadedRecursively(CurrentDirectory);
+            return CurrentDirectory.Files
+                .Union(CurrentDirectory.Children.GetFromHierarchy(directory => directory.Children, directory => directory.Files))
+                .ToList().AsReadOnly();
+        }       
+        
+        private void EnsureContentsAreLoaded(Directory directory)
+        {
+            if (directory.Children.Count == 0)
+                device.FillSubdirectories(directory);
+            if (directory.Files.Count == 0)
+                device.FillFiles(directory);
+        }
+
+        private void EnsureContentsAreLoadedRecursively(Directory directory)
+        {
+            Queue<Directory> queue = new Queue<Directory>();
+            queue.Enqueue(directory);
+
+            while (queue.Count > 0)
+            {
+                Directory directoryToLoadContentsOf = queue.Dequeue();
+
+                if (directoryToLoadContentsOf.Children.Count == 0)
+                    device.FillSubdirectories(directoryToLoadContentsOf);
+                if (directoryToLoadContentsOf.Files.Count == 0)
+                    device.FillFiles(directoryToLoadContentsOf);
+
+                queue.EnqueueRange(directoryToLoadContentsOf.Children);
+            }
         }
     }
 }

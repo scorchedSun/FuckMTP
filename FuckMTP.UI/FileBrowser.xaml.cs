@@ -1,4 +1,9 @@
-﻿using FuckMTP.DeviceConnector.Contracts;
+﻿using FileSystem;
+using FuckMTP.Core.Contracts;
+using FuckMTP.DeviceConnector.Contracts;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace FuckMTP.UI
@@ -8,15 +13,16 @@ namespace FuckMTP.UI
     /// </summary>
     public partial class FileBrowser : Window
     {
-        private readonly FileBrowserViewModel viewModel;        
+        private readonly FileBrowserViewModel viewModel;
 
         public FileBrowser(IDevice device)
         {
             InitializeComponent();
             DataContext = viewModel = new FileBrowserViewModel(device);
             viewModel.DisplayContentsOf(device.Root.Value);
-        }       
+        }
 
+        public IReadOnlyList<IFile> GetFiles() => viewModel.GetFiles().Select(FileAdapter.Adapt).ToList().AsReadOnly();
         private void btnAbort_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -28,11 +34,6 @@ namespace FuckMTP.UI
             Close();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            DialogResult = false;
-        }
-
         private void lbFiles_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
             => viewModel.NavigateIntoSelectedDirectory();
 
@@ -41,5 +42,18 @@ namespace FuckMTP.UI
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
             => viewModel.NavigateIntoSelectedDirectory();
+
+        private class FileAdapter : IFile
+        {
+            private readonly File file;
+
+            private FileAdapter(File file) => this.file = file;
+
+            public static FileAdapter Adapt(File file) => new FileAdapter(file);
+
+            public string Name => file.Name;
+
+            public string Path => file.GetPath();
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.IO;
 
 namespace FileSystem
 {
-
     public class File : IFileSystemEntry
     {
         public string Name { get; }

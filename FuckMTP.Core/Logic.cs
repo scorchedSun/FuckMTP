@@ -7,55 +7,48 @@ namespace FuckMTP.Core
     public class Logic
     {
         private readonly IInteractor interactor;
+        private readonly IFileSource fileSource;
 
-        public Logic(IInteractor interactor)
+        public Logic(IInteractor interactor, IFileSource fileSource)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
+            this.fileSource = fileSource ?? throw new ArgumentNullException(nameof(fileSource));
         }
 
         public void Run()
         {
-            try
+            IReadOnlyList<IFile> files = fileSource.SelectFiles();
+
+            if (files.Count == 0)
             {
-                IList<IFile> files = interactor.GetFiles();
-
-                string target = interactor.GetTargetPath();
-
-                if (string.IsNullOrWhiteSpace(target))
-                {
-                    interactor.NotifyNoFolderSelected();
-                    return;
-                }
-
-                IOperationConfiguration configuration = interactor.GetOperationConfiguration();
-
-                //IDirectory rootDirectory;
-                //using (IBusyIndicator busyIndicator = interactor.SetBusy())
-                //{
-                //    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
-                //}
-
-                //IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
-
-                //using (IBusyIndicator busyIndicator = interactor.SetBusy())
-                //{
-                //    Execute(operation);
-                //}
-
-                //interactor.NotifySuccess(operation);
+                interactor.NotifyNoFilesSelected();
+                return;
             }
-            catch (FileSelectionAbortedException)
+
+            string target = interactor.SelectTargetPath();
+
+            if (string.IsNullOrWhiteSpace(target))
             {
-                interactor.NotifyFileSelectionAborted();
+                interactor.NotifyNoTargetPathSelected();
+                return;
             }
-            catch (NoFolderSelectedException)
-            {
-                interactor.NotifyNoFolderSelected();
-            }
-            catch (ConfigurationAbortedException)
-            {
-                interactor.NotifyConfigurationAborted();
-            }
+
+            IOperationConfiguration configuration = interactor.GetOperationConfiguration();
+
+            //IDirectory rootDirectory;
+            //using (IBusyIndicator busyIndicator = interactor.SetBusy())
+            //{
+            //    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
+            //}
+
+            //IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
+
+            //using (IBusyIndicator busyIndicator = interactor.SetBusy())
+            //{
+            //    Execute(operation);
+            //}
+
+            //interactor.NotifySuccess(operation);
         }
 
         private bool DetermineIsLocalCopy()

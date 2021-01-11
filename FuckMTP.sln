@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystem", "FileSystem\Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.MTPDeviceConnector", "FuckMTP.MTPDeviceConnector\FuckMTP.MTPDeviceConnector.csproj", "{2BF0D1CB-A550-4C86-820E-4298B519AAB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.Core.Tests", "FuckMTP.Core.Tests\FuckMTP.Core.Tests.csproj", "{645F8C51-3193-44EA-9613-B44BE6DB2B56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonExtensions", "CommonExtensions\CommonExtensions.csproj", "{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,22 @@ Global
 		{2BF0D1CB-A550-4C86-820E-4298B519AAB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2BF0D1CB-A550-4C86-820E-4298B519AAB9}.Release|x64.ActiveCfg = Release|Any CPU
 		{2BF0D1CB-A550-4C86-820E-4298B519AAB9}.Release|x64.Build.0 = Release|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Debug|x64.Build.0 = Debug|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Release|x64.ActiveCfg = Release|Any CPU
+		{645F8C51-3193-44EA-9613-B44BE6DB2B56}.Release|x64.Build.0 = Release|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Debug|x64.Build.0 = Debug|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Release|x64.ActiveCfg = Release|Any CPU
+		{A3AA3286-D2AD-43E4-B2FF-8C14D0EEFA65}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

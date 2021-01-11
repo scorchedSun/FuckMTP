@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FuckMTP.UI"
         mc:Ignorable="d"
-        Title="Dateiauswahl" Height="450" Width="770" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="Dateiauswahl" Height="450" Width="770" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
