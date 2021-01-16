@@ -1,6 +1,9 @@
 ﻿using FuckMTP.Core.Contracts;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace FuckMTP.Core
 {
@@ -8,11 +11,13 @@ namespace FuckMTP.Core
     {
         private readonly IInteractor interactor;
         private readonly IFileSource fileSource;
+        private readonly IFileHandler fileHandler;
 
-        public Logic(IInteractor interactor, IFileSource fileSource)
+        public Logic(IInteractor interactor, IFileSource fileSource, IFileHandler fileHandler)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.fileSource = fileSource ?? throw new ArgumentNullException(nameof(fileSource));
+            this.fileHandler = fileHandler ?? throw new ArgumentNullException(nameof(fileHandler));
         }
 
         public void Run()
@@ -35,54 +40,48 @@ namespace FuckMTP.Core
 
             IOperationConfiguration configuration = interactor.GetOperationConfiguration();
 
-            //IDirectory rootDirectory;
-            //using (IBusyIndicator busyIndicator = interactor.SetBusy())
-            //{
-            //    rootDirectory = deviceConnector.ReadMetadataOfAllFiles();
-            //}
+            if (configuration is null || configuration.Mode == Mode.Abort)
+            {
+                interactor.NotifyNoOperationConfigurationProvided();
+                return;
+            }
 
-            //IFileOperation operation = interactor.CreateFileOperation(rootDirectory);
+            Process(files, target, configuration);
 
-            //using (IBusyIndicator busyIndicator = interactor.SetBusy())
-            //{
-            //    Execute(operation);
-            //}
-
-            //interactor.NotifySuccess(operation);
+            interactor.ReportSuccess();
         }
 
-        private bool DetermineIsLocalCopy()
+        private void Process(IReadOnlyList<IFile> files, string targetPath, IOperationConfiguration configuration)
         {
-            return false;
+            Action<string, string, bool> fileOperation;
+            if (configuration.Mode == Mode.Copy)
+                fileOperation = fileHandler.Copy;
+            else
+                fileOperation = fileHandler.Move;
+
+            foreach (IFile file in files)
+            {
+                if (!File.Exists(Path.Combine(targetPath, file.Name)) || configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
+                {
+                    fileOperation(file.Path, targetPath, configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Overwrite);
+                }
+                else
+                {
+                    string newFileName = DetermineNewNameForPotentialDuplicateBasedOn(file.Name, targetPath);
+                    fileOperation(file.Path, Path.Combine(targetPath, newFileName), false);
+                }
+            }
         }
 
-        //private void Execute(IFileOperation operation)
-        //{
-        //    switch (operation.Configuration.Mode)
-        //    {
-        //        case Mode.Copy:
-        //            deviceConnector.CopyFiles(operation.Files, operation.TargetPath, operation.Configuration.BehaviorRegardingDuplicates);
-        //            break;
-        //        case Mode.Move:
-        //            deviceConnector.MoveFiles(operation.Files, operation.TargetPath, operation.Configuration.BehaviorRegardingDuplicates);
-        //            break;
-        //    }
-        //}
+        private string DetermineNewNameForPotentialDuplicateBasedOn(string fileName, string targetPath)
+        {
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+            string extension = Path.GetExtension(fileName);
+            Regex regex = new Regex($@"{fileNameWithoutExtension}(?: \(\d+\))?\.{extension}", RegexOptions.Compiled);
 
-        //private IDevice SelectDevice()
-        //{
-        //    IList<IDevice> connectedDevices = deviceConnector.GetConnectedDevices();
+            int numberOfPotentialDuplicates = Directory.GetFiles(targetPath).Count(filePath => regex.IsMatch(Path.GetFileName(filePath)));
 
-        //    if (connectedDevices.Count == 1)
-        //        return connectedDevices[0];
-        //    else if (connectedDevices.Count > 1)
-        //    {
-        //        IDevice selectedDevice = interactor.SelectOneDevice(connectedDevices);
-        //        if (selectedDevice is null)
-        //            throw new NoDeviceSelectedException();
-        //    }
-
-        //    throw new NoDeviceConnectedException();
-        //}
+            return $"{fileNameWithoutExtension} ({++numberOfPotentialDuplicates}).{extension}";
+        }
     }
 }

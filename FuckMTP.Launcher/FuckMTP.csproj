@@ -47,6 +47,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADBFileHandler.cs" />
+    <Compile Include="DeviceFileSource.cs" />
     <Compile Include="Interactor.cs" />
     <Compile Include="NoDeviceConnectedException.cs" />
     <Compile Include="NoDeviceSelectedException.cs" />

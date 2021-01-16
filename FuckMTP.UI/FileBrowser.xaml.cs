@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace FuckMTP.UI
 {
@@ -22,7 +23,14 @@ namespace FuckMTP.UI
             viewModel.DisplayContentsOf(device.Root.Value);
         }
 
-        public IReadOnlyList<IFile> GetFiles() => viewModel.GetFiles().Select(FileAdapter.Adapt).ToList().AsReadOnly();
+        public IReadOnlyList<IFile> GetFiles()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            IEnumerable<IFile> files = viewModel.GetFiles().Select(FileAdapter.Adapt);
+            Mouse.OverrideCursor = null;
+
+            return files.ToList().AsReadOnly();
+        }
         private void btnAbort_Click(object sender, RoutedEventArgs e)
         {
             Close();

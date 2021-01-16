@@ -1,8 +1,6 @@
-﻿using FileSystem;
-using FuckMTP.Core.Contracts;
+﻿using FuckMTP.Core.Contracts;
 using FuckMTP.DeviceConnector.Contracts;
 using FuckMTP.UI;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -43,7 +41,7 @@ namespace FuckMTP
 
             if (window.ShowDialog().Value)
                 return window.Configuration;
-            throw new ConfigurationAbortedException();
+            return new AbortedOperationConfiguration();
         }
 
         public string SelectTargetPath()
@@ -56,7 +54,12 @@ namespace FuckMTP
             {
                 return folderBrowser.SelectedPath;
             }
-            throw new NoFolderSelectedException();
+            return null;
+        }
+
+        public void ReportSuccess()
+        {
+            MessageBox.Show("Der Vorgang wurde erfolgreich abgeschlossen.", "Hinweis", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         internal void NotifyNoDeviceConnected()
@@ -65,13 +68,19 @@ namespace FuckMTP
         internal void NotifyNoDeviceSelected()
             => MessageBox.Show("Es wurde kein Gerät ausgewählt. Bitte wählen Sie ein Gerät aus.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-        public void NotifyConfigurationAborted()
-            => Debug.WriteLine("The configuration process was aborted. Ending process.");
-
         public void NotifyNoFilesSelected()
             => MessageBox.Show("Es wurden keine Dateien ausgewählt. Der Vorgang wird abgebrochen.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         public void NotifyNoTargetPathSelected()
             => MessageBox.Show("Es wurde kein Zielordner ausgewählt. Der Vorgang wird abgebrochen.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+        public void NotifyNoOperationConfigurationProvided()
+            => MessageBox.Show("Es wurden keine Einstellungen für den Vorgang gewählt. Der Vorgang wird abgebrochen.", "Feher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+    internal class AbortedOperationConfiguration : IOperationConfiguration
+    {
+        public Mode Mode => Mode.Abort;
+        public BehaviorRegardingDuplicates BehaviorRegardingDuplicates => BehaviorRegardingDuplicates.Ignore;
     }
 }

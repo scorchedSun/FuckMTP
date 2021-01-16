@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace FuckMTP.Core.Contracts
+﻿namespace FuckMTP.Core.Contracts
 {
-
     public interface IInteractor
     {
         void NotifyNoFilesSelected();
@@ -11,6 +8,9 @@ namespace FuckMTP.Core.Contracts
         void NotifyNoTargetPathSelected();
 
         IOperationConfiguration GetOperationConfiguration();
+        void NotifyNoOperationConfigurationProvided();
+
+        void ReportSuccess();
     }
 
 }

@@ -48,7 +48,7 @@
     <Compile Include="IBusyIndicator.cs" />
     <Compile Include="IDirectory.cs" />
     <Compile Include="IFile.cs" />
-    <Compile Include="IFileOperation.cs" />
+    <Compile Include="IFileHandler.cs" />
     <Compile Include="IFileSource.cs" />
     <Compile Include="IInteractor.cs" />
     <Compile Include="IOperationConfiguration.cs" />
