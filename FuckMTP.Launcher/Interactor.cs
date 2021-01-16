@@ -15,7 +15,11 @@ namespace FuckMTP
             FileBrowser fileBrowser = new FileBrowser(device);
             fileBrowser.ShowDialog();
 
-            return fileBrowser.GetFiles();
+            if (fileBrowser.DialogResult.HasValue && fileBrowser.DialogResult.Value)
+            {
+                return fileBrowser.GetFiles();
+            }
+            return Enumerable.Empty<IFile>().ToList().AsReadOnly();
         }
 
         internal IDevice SelectDeviceFrom(IDeviceSource source)

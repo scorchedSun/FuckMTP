@@ -1,4 +1,5 @@
-﻿using FuckMTP.Core;
+﻿using FuckMTP.ADB;
+using FuckMTP.Core;
 using FuckMTP.DeviceConnector.Contracts;
 using FuckMTP.MTPDeviceConnector;
 using System;
@@ -37,9 +38,10 @@ namespace FuckMTP
             try
             {
                 using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource()))
-                using(DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
+                using (DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
+                using (FileHandler fileHandler = FileHandler.For(device).With(new ADBConfiguration()))
                 {
-                    Logic logic = new Logic(interactor, fileSource, new ADBFileHandler());
+                    Logic logic = new Logic(interactor, fileSource, fileHandler);
                     logic.Run();
                 }
             }
@@ -62,5 +64,10 @@ namespace FuckMTP
             IntPtr handle = GetConsoleWindow();
             ShowWindow(handle, 0);
         }
+    }
+
+    internal sealed class ADBConfiguration : IConfiguration
+    {
+        public string PathToExecutable => @"I:\adb\adb.exe";
     }
 }

@@ -50,13 +50,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MediaDevicesLicense.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MediaDevices.chm" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FileSystem\FileSystem.csproj">
       <Project>{3AB63EDA-8ABD-4EF7-8A7A-4E6A9A614942}</Project>
       <Name>FileSystem</Name>
@@ -65,6 +58,13 @@
       <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
       <Name>FuckMTP.DeviceConnector.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MediaDevicesLicense.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MediaDevices.chm" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -61,7 +61,10 @@ namespace FuckMTP.Core
 
             foreach (IFile file in files)
             {
-                if (!File.Exists(Path.Combine(targetPath, file.Name)) || configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
+                if (File.Exists(Path.Combine(targetPath, file.Name)) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
+                    continue;
+
+                if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
                 {
                     fileOperation(file.Path, targetPath, configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Overwrite);
                 }

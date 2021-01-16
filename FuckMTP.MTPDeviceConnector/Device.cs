@@ -12,6 +12,7 @@ namespace FuckMTP.MTPDeviceConnector
         private bool disposed;
 
         public string Name => mediaDevice.FriendlyName;
+        public string SerialNumber => mediaDevice.SerialNumber;
 
         public Lazy<Directory> Root { get; }
 

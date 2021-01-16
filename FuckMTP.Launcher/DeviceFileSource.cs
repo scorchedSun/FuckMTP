@@ -34,7 +34,6 @@ namespace FuckMTP
             }
             catch (Exception) { }
             disposed = true;
-            GC.SuppressFinalize(this);
         }
     }
 }
