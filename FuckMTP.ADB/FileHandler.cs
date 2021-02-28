@@ -1,12 +1,9 @@
 ﻿using FuckMTP.Core.Contracts;
-using FuckMTP.DeviceConnector.Contracts;
 using System;
 using SharpAdbClient;
 using IDevice = FuckMTP.DeviceConnector.Contracts.IDevice;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.IO;
 using System.Threading;
 
@@ -47,9 +44,8 @@ namespace FuckMTP.ADB
                 client.ExecuteRemoteCommand("ls -a /sdcard/", deviceData, receiver);
                 */
 
-                // ToDo: Temp hack, replace with actual resolving logic
                 string sourcePath = filePath.Replace(@"\Phone", Root).Replace(@"\", "/");
-                using (FileStream stream = File.OpenWrite(Path.Combine(targetPath, Path.GetFileName(filePath))))
+                using (FileStream stream = File.OpenWrite(targetPath))
                 {
                     syncService.Pull(sourcePath, stream, null, CancellationToken.None);
                 }
@@ -58,6 +54,13 @@ namespace FuckMTP.ADB
 
         public void Move(string filePath, string targetPath, bool overwriteExisting)
         {
+            Copy(filePath, targetPath, overwriteExisting);
+
+            if (File.Exists(targetPath))
+            {
+                string sourcePath = filePath.Replace(@"\Phone", Root).Replace(@"\", "/");
+                client.ExecuteRemoteCommand($"rm {sourcePath}", deviceData, null);
+            }
         }
 
         public sealed class RequiresConfiguration

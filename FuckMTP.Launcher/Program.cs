@@ -40,7 +40,7 @@ namespace FuckMTP
                 using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource()))
                 using (DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
                 {
-                    FileHandler fileHandler = FileHandler.For(device).With(new ADBConfiguration())
+                    FileHandler fileHandler = FileHandler.For(device).With(new ADBConfiguration());
                     Logic logic = new Logic(interactor, fileSource, fileHandler);
                     logic.Run();
                 }

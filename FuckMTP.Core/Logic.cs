@@ -1,4 +1,5 @@
-﻿using FuckMTP.Core.Contracts;
+﻿using CommonExtensions;
+using FuckMTP.Core.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,19 +60,28 @@ namespace FuckMTP.Core
             else
                 fileOperation = fileHandler.Move;
 
+            List<string> uniqueDirectoryPaths = GetUniqueDirectoryPathsFrom(files);
+            string commonBasePath = uniqueDirectoryPaths.GetCommonPrefix();
+            commonBasePath = commonBasePath.TrimEnd(Path.DirectorySeparatorChar);
+            targetPath = targetPath.Trim(Path.DirectorySeparatorChar);
+
+            EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
+
             foreach (IFile file in files)
             {
-                if (File.Exists(Path.Combine(targetPath, file.Name)) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
+                string localPath = file.Path.Replace(commonBasePath, targetPath);
+
+                if (File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
                     continue;
 
                 if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
                 {
-                    fileOperation(file.Path, targetPath, configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Overwrite);
+                    fileOperation(file.Path, localPath, configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Overwrite);
                 }
                 else
                 {
                     string newFileName = DetermineNewNameForPotentialDuplicateBasedOn(file.Name, targetPath);
-                    fileOperation(file.Path, Path.Combine(targetPath, newFileName), false);
+                    fileOperation(file.Path, localPath.Replace(file.Name, newFileName), false);
                 }
             }
         }
@@ -85,6 +95,24 @@ namespace FuckMTP.Core
             int numberOfPotentialDuplicates = Directory.GetFiles(targetPath).Count(filePath => regex.IsMatch(Path.GetFileName(filePath)));
 
             return $"{fileNameWithoutExtension} ({++numberOfPotentialDuplicates}).{extension}";
+        }
+
+        private List<string> GetUniqueDirectoryPathsFrom(IReadOnlyList<IFile> files)
+        {
+            return files
+                .Select(file => Path.GetDirectoryName(file.Path))
+                .Distinct()
+                .OrderBy(path => path.Length)
+                .ToList();
+        }
+
+        private void EnsureLocalDirectoriesExist(IReadOnlyList<string> localPaths)
+        {
+            foreach (string subdirectoryPath in localPaths)
+            {
+                if (!Directory.Exists(subdirectoryPath))
+                    Directory.CreateDirectory(subdirectoryPath);
+            }
         }
     }
 }

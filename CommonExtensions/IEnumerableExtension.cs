@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CommonExtensions
 {
@@ -25,6 +26,21 @@ namespace CommonExtensions
 
                 queue.EnqueueRange(stepDownIntoHierarchyFor(item));
             }
+        }
+
+        public static string GetCommonPrefix(this IEnumerable<string> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+
+            IReadOnlyList<string> sourceAsList = source.ToList().AsReadOnly();
+
+            if (sourceAsList.Count == 0)
+                return string.Empty;
+
+            return new string(sourceAsList[0]
+                .Substring(0, sourceAsList.Min(s => s.Length))
+                .TakeWhile((c, i) => sourceAsList.All(s => s[i] == c))
+                .ToArray());
         }
     }
 }

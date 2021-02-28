@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonExtensions\CommonExtensions.csproj">
+      <Project>{a3aa3286-d2ad-43e4-b2ff-8c14d0eefa65}</Project>
+      <Name>CommonExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
       <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
       <Name>FuckMTP.Core.Contracts</Name>
