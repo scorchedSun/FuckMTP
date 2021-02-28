@@ -12,17 +12,15 @@ using System.Threading;
 
 namespace FuckMTP.ADB
 {
-    public sealed class FileHandler : IFileHandler, IDisposable
+    public sealed class FileHandler : IFileHandler
     {
         private const string Root = "/sdcard";
 
         private readonly IDevice device;
         private readonly IConfiguration configuration;
-        private bool disposed = false;
         AdbServer server;
         AdbClient client;
         DeviceData deviceData;
-        SyncService syncService;
 
         private FileHandler(IDevice device, IConfiguration configuration)
         {
@@ -39,38 +37,27 @@ namespace FuckMTP.ADB
                 server = new AdbServer();
                 server.StartServer(configuration.PathToExecutable, false);
                 client = new AdbClient();
-                deviceData = client.GetDevices().Single(d => d.Serial.Equals(device.SerialNumber, StringComparison.InvariantCulture));
-
-                syncService = new SyncService(new AdbSocket(new IPEndPoint(IPAddress.Loopback, AdbClient.AdbServerPort)), deviceData);
+                deviceData = client.GetDevices().Single(d => d.Serial.Equals(device.SerialNumber, StringComparison.InvariantCulture));               
             }
 
-            /* Use for ADB device connector ;)
-            var receiver = new ConsoleOutputReceiver();
-            client.ExecuteRemoteCommand("ls -a /sdcard/", deviceData, receiver);
-            */
-
-            // ToDo: Temp hack, replace with actual resolving logic
-            string sourcePath = filePath.Replace(@"\Phone", Root).Replace(@"\", "/");
-            using (FileStream stream = File.OpenWrite(Path.Combine(targetPath, Path.GetFileName(filePath))))
+            using (SyncService syncService = new SyncService(new AdbSocket(new IPEndPoint(IPAddress.Loopback, AdbClient.AdbServerPort)), deviceData))
             {
-                syncService.Pull(sourcePath, stream, null, CancellationToken.None);
+                /* Use for ADB device connector ;)
+                var receiver = new ConsoleOutputReceiver();
+                client.ExecuteRemoteCommand("ls -a /sdcard/", deviceData, receiver);
+                */
+
+                // ToDo: Temp hack, replace with actual resolving logic
+                string sourcePath = filePath.Replace(@"\Phone", Root).Replace(@"\", "/");
+                using (FileStream stream = File.OpenWrite(Path.Combine(targetPath, Path.GetFileName(filePath))))
+                {
+                    syncService.Pull(sourcePath, stream, null, CancellationToken.None);
+                }
             }
         }
 
         public void Move(string filePath, string targetPath, bool overwriteExisting)
         {
-        }
-
-        public void Dispose()
-        {
-            if (disposed) return;
-
-            try
-            {
-                syncService?.Dispose();
-            }
-            catch (Exception) { }
-            disposed = true;
         }
 
         public sealed class RequiresConfiguration
