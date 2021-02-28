@@ -15,9 +15,9 @@ namespace FuckMTP.ADB
 
         private readonly IDevice device;
         private readonly IConfiguration configuration;
-        AdbServer server;
-        AdbClient client;
-        DeviceData deviceData;
+        private AdbServer server;
+        private AdbClient client;
+        private DeviceData deviceData;
 
         private FileHandler(IDevice device, IConfiguration configuration)
         {
