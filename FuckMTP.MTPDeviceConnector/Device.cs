@@ -11,8 +11,23 @@ namespace FuckMTP.MTPDeviceConnector
         private readonly MediaDevice mediaDevice;
         private bool disposed;
 
-        public string Name => mediaDevice.FriendlyName;
-        public string SerialNumber => mediaDevice.SerialNumber;
+        public string Name
+        {
+            get 
+            {
+                EnsureIsConnected();
+                return mediaDevice.FriendlyName;
+            }
+        }
+
+        public string SerialNumber
+        {
+            get 
+            {
+                EnsureIsConnected();
+                return mediaDevice.SerialNumber; 
+            }
+        }
 
         public Lazy<Directory> Root { get; }
 

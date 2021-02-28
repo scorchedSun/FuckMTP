@@ -1,9 +1,11 @@
-﻿namespace FuckMTP.Core.Contracts
+﻿using System.Threading.Tasks;
+
+namespace FuckMTP.Core.Contracts
 {
     public interface IFileHandler
     {
-        void Copy(string filePath, string targetPath, bool overwriteExisting);
+        Task CopyAsync(string filePath, string targetPath);
 
-        void Move(string filePath, string targetPath, bool overwriteExisting);
+        Task MoveAsync(string filePath, string targetPath);
     }
 }

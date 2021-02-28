@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FuckMTP.Core
 {
@@ -54,11 +56,11 @@ namespace FuckMTP.Core
 
         private void Process(IReadOnlyList<IFile> files, string targetPath, IOperationConfiguration configuration)
         {
-            Action<string, string, bool> fileOperation;
+            Func<string, string, Task> fileOperation;
             if (configuration.Mode == Mode.Copy)
-                fileOperation = fileHandler.Copy;
+                fileOperation = fileHandler.CopyAsync;
             else
-                fileOperation = fileHandler.Move;
+                fileOperation = fileHandler.MoveAsync;
 
             List<string> uniqueDirectoryPaths = GetUniqueDirectoryPathsFrom(files);
             string commonBasePath = uniqueDirectoryPaths.GetCommonPrefix();
@@ -67,22 +69,27 @@ namespace FuckMTP.Core
 
             EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
 
-            foreach (IFile file in files)
+            var result = Parallel.ForEach(files, file =>
             {
                 string localPath = file.Path.Replace(commonBasePath, targetPath);
 
                 if (File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
-                    continue;
+                    return;
 
                 if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
                 {
-                    fileOperation(file.Path, localPath, configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Overwrite);
+                    fileOperation(file.Path, localPath).GetAwaiter().GetResult();
                 }
                 else
                 {
                     string newFileName = DetermineNewNameForPotentialDuplicateBasedOn(file.Name, targetPath);
-                    fileOperation(file.Path, localPath.Replace(file.Name, newFileName), false);
+                    fileOperation(file.Path, localPath.Replace(file.Name, newFileName)).GetAwaiter().GetResult();
                 }
+            });
+
+            while (!result.IsCompleted)
+            {
+                Thread.Sleep(500);
             }
         }
 
