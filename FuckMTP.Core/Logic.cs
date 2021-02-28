@@ -69,7 +69,7 @@ namespace FuckMTP.Core
 
             EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
 
-            var result = Parallel.ForEach(files, file =>
+            Parallel.ForEach(files, file =>
             {
                 string localPath = file.Path.Replace(commonBasePath, targetPath);
 
@@ -86,11 +86,6 @@ namespace FuckMTP.Core
                     fileOperation(file.Path, localPath.Replace(file.Name, newFileName)).GetAwaiter().GetResult();
                 }
             });
-
-            while (!result.IsCompleted)
-            {
-                Thread.Sleep(500);
-            }
         }
 
         private string DetermineNewNameForPotentialDuplicateBasedOn(string fileName, string targetPath)
