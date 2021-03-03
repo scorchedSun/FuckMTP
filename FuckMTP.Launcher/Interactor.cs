@@ -1,10 +1,11 @@
 ﻿using FuckMTP.Core.Contracts;
 using FuckMTP.DeviceConnector.Contracts;
 using FuckMTP.UI;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace FuckMTP
 {
@@ -59,6 +60,12 @@ namespace FuckMTP
                 return folderBrowser.SelectedPath;
             }
             return null;
+        }
+
+        public void RunWithProgressReport(Action<ProgressReporter> action)
+        {
+            ProgressWindow progressWindow = new ProgressWindow("Verarbeite Dateien...", action);
+            progressWindow.ShowDialog();
         }
 
         public void ReportSuccess()

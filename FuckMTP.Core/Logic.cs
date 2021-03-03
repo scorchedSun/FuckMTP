@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace FuckMTP.Core
@@ -48,7 +47,7 @@ namespace FuckMTP.Core
                 interactor.NotifyNoOperationConfigurationProvided();
                 return;
             }
-
+            
             Process(files, target, configuration);
 
             interactor.ReportSuccess();
@@ -69,22 +68,27 @@ namespace FuckMTP.Core
 
             EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
 
-            Parallel.ForEach(files, file =>
+            interactor.RunWithProgressReport(progressReporter =>
             {
-                string localPath = file.Path.Replace(commonBasePath, targetPath);
-
-                if (File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
-                    return;
-
-                if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
+                Parallel.ForEach(files, file =>
                 {
-                    fileOperation(file.Path, localPath).GetAwaiter().GetResult();
-                }
-                else
-                {
-                    string newFileName = DetermineNewNameForPotentialDuplicateBasedOn(file.Name, targetPath);
-                    fileOperation(file.Path, localPath.Replace(file.Name, newFileName)).GetAwaiter().GetResult();
-                }
+                    string localPath = file.Path.Replace(commonBasePath, targetPath);
+
+                    if (File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
+                        return;
+
+                    if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
+                    {
+                        fileOperation(file.Path, localPath).GetAwaiter().GetResult();
+                    }
+                    else
+                    {
+                        string newFileName = DetermineNewNameForPotentialDuplicateBasedOn(file.Name, targetPath);
+                        fileOperation(file.Path, localPath.Replace(file.Name, newFileName)).GetAwaiter().GetResult();
+                    }
+
+                    progressReporter.StepOne();
+                });
             });
         }
 

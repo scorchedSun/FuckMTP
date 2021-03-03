@@ -1,4 +1,6 @@
-﻿namespace FuckMTP.Core.Contracts
+﻿using System;
+
+namespace FuckMTP.Core.Contracts
 {
     public interface IInteractor
     {
@@ -10,7 +12,8 @@
         IOperationConfiguration GetOperationConfiguration();
         void NotifyNoOperationConfigurationProvided();
 
+        void RunWithProgressReport(Action<ProgressReporter> action);
+
         void ReportSuccess();
     }
-
 }

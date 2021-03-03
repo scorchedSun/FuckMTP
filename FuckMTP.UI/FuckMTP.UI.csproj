@@ -91,6 +91,10 @@
     <Compile Include="FileDropViewModel.cs" />
     <Compile Include="ObservableEntry.cs" />
     <Compile Include="ObservableSet.cs" />
+    <Compile Include="ProgressWindowHandlingProgressReporter.cs" />
+    <Compile Include="ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PropertyChangedNotifier.cs" />
     <Page Include="DeviceSelector.xaml">
       <SubType>Designer</SubType>
@@ -130,6 +134,10 @@
       <DependentUpon>FileOperationBuilder.xaml</DependentUpon>
     </Compile>
     <Page Include="ModeSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
