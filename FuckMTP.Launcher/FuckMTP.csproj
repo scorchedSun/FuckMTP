@@ -66,12 +66,8 @@
       <Project>{a5554e40-6db0-4261-ad5b-cb883ef75fc2}</Project>
       <Name>FuckMTP.ADB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj">
+    <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.csproj">
       <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
-      <Name>FuckMTP.Core.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
-      <Project>{97A9E1DA-3965-4F66-B6E0-18D788DC3133}</Project>
       <Name>FuckMTP.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj">

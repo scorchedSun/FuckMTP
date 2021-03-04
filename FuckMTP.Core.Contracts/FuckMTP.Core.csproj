@@ -7,8 +7,8 @@
     <ProjectGuid>{7B492E14-E854-44F6-A377-88A571152EAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FuckMTP.Core.Contracts</RootNamespace>
-    <AssemblyName>FuckMTP.Core.Contracts</AssemblyName>
+    <RootNamespace>FuckMTP.Core</RootNamespace>
+    <AssemblyName>FuckMTP.Core</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -52,10 +52,17 @@
     <Compile Include="IFileSource.cs" />
     <Compile Include="IInteractor.cs" />
     <Compile Include="IOperationConfiguration.cs" />
+    <Compile Include="Logic.cs" />
     <Compile Include="Mode.cs" />
     <Compile Include="NoFolderSelectedException.cs" />
     <Compile Include="ProgressReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonExtensions\CommonExtensions.csproj">
+      <Project>{a3aa3286-d2ad-43e4-b2ff-8c14d0eefa65}</Project>
+      <Name>CommonExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

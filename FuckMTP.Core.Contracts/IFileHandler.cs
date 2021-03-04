@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FuckMTP.Core.Contracts
+namespace FuckMTP.Core
 {
     public interface IFileHandler
     {

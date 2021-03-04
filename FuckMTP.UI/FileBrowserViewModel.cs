@@ -1,6 +1,6 @@
 ﻿using CommonExtensions;
 using FileSystem;
-using FuckMTP.Core.Contracts;
+using FuckMTP.Core;
 using FuckMTP.DeviceConnector.Contracts;
 using System;
 using System.Collections.Generic;

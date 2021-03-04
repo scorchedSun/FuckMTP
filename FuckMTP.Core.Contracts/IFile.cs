@@ -1,4 +1,4 @@
-﻿namespace FuckMTP.Core.Contracts
+﻿namespace FuckMTP.Core
 {
     public interface IFile
     {

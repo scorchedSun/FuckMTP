@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FuckMTP.Core.Contracts
+namespace FuckMTP.Core
 {
     public interface IDirectory
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuckMTP.Core.Contracts
+namespace FuckMTP.Core
 {
     public interface IBusyIndicator : IDisposable
     {

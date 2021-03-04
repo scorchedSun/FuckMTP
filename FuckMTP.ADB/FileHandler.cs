@@ -1,4 +1,4 @@
-﻿using FuckMTP.Core.Contracts;
+﻿using FuckMTP.Core;
 using System;
 using IDevice = FuckMTP.DeviceConnector.Contracts.IDevice;
 using FluentAdb;

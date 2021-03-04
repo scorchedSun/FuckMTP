@@ -1,5 +1,5 @@
 ﻿using FileSystem;
-using FuckMTP.Core.Contracts;
+using FuckMTP.Core;
 using FuckMTP.DeviceConnector.Contracts;
 using System.Collections;
 using System.Collections.Generic;
