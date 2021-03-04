@@ -42,9 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorRegardingDuplicates.cs" />
-    <Compile Include="ConfigurationAbortedException.cs" />
-    <Compile Include="ExecutionFailedException.cs" />
-    <Compile Include="FileSelectionAbortedException.cs" />
     <Compile Include="IBusyIndicator.cs" />
     <Compile Include="IDirectory.cs" />
     <Compile Include="IFile.cs" />
@@ -54,7 +51,6 @@
     <Compile Include="IOperationConfiguration.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Mode.cs" />
-    <Compile Include="NoFolderSelectedException.cs" />
     <Compile Include="ProgressReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
