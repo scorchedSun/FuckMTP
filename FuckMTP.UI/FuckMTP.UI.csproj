@@ -180,12 +180,8 @@
       <Project>{3AB63EDA-8ABD-4EF7-8A7A-4E6A9A614942}</Project>
       <Name>FileSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.ADB\FuckMTP.ADB.csproj">
-      <Project>{A5554E40-6DB0-4261-AD5B-CB883EF75FC2}</Project>
-      <Name>FuckMTP.ADB</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.csproj">
-      <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
+      <Project>{7b492e14-e854-44f6-a377-88a571152eac}</Project>
       <Name>FuckMTP.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj">

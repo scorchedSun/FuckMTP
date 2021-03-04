@@ -114,7 +114,7 @@
       <Name>FileSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.csproj">
-      <Project>{7B492E14-E854-44F6-A377-88A571152EAC}</Project>
+      <Project>{7b492e14-e854-44f6-a377-88a571152eac}</Project>
       <Name>FuckMTP.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj">
