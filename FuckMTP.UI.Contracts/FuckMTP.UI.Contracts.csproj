@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.Contracts.csproj" />
+    <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj" />
   </ItemGroup>
 
 </Project>

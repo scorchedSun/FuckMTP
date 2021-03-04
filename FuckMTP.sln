@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.UI", "FuckMTP.UI\Fu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP", "FuckMTP.Launcher\FuckMTP.csproj", "{197D1D07-9ECC-4BBB-B761-484BA8BDE9B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.Core", "FuckMTP.Core.Contracts\FuckMTP.Core.csproj", "{7B492E14-E854-44F6-A377-88A571152EAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.Core", "FuckMTP.Core\FuckMTP.Core.csproj", "{7B492E14-E854-44F6-A377-88A571152EAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuckMTP.DeviceConnector.Contracts", "FuckMTP.DeviceConnector.Contracts\FuckMTP.DeviceConnector.Contracts.csproj", "{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}"
 EndProject

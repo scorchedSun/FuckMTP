@@ -113,7 +113,7 @@
       <Project>{3AB63EDA-8ABD-4EF7-8A7A-4E6A9A614942}</Project>
       <Name>FileSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.Core.Contracts\FuckMTP.Core.csproj">
+    <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
       <Project>{7b492e14-e854-44f6-a377-88a571152eac}</Project>
       <Name>FuckMTP.Core</Name>
     </ProjectReference>
