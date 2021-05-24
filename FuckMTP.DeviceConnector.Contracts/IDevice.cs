@@ -1,5 +1,6 @@
 ﻿using FileSystem;
 using System;
+using System.Threading.Tasks;
 
 namespace FuckMTP.DeviceConnector.Contracts
 {
@@ -10,7 +11,7 @@ namespace FuckMTP.DeviceConnector.Contracts
 
         Lazy<Directory> Root { get; }
 
-        void FillSubdirectories(Directory directory);
-        void FillFiles(Directory directory);
+        Task FillSubdirectories(Directory directory);
+        Task FillFiles(Directory directory);
     }
 }

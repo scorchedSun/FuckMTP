@@ -53,7 +53,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAdb, Version=1.0.28.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FluentAdb, Version=1.0.7814.26807, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\FluentAdb\FluentAdb\bin\Release\FluentAdb.dll</HintPath>
     </Reference>
@@ -100,8 +100,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Device.cs" />
+    <Compile Include="DeviceSource.cs" />
     <Compile Include="FileHandler.cs" />
+    <Compile Include="FileSystemManagement.cs" />
     <Compile Include="IConfiguration.cs" />
+    <Compile Include="PathHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +125,9 @@
       <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
       <Name>FuckMTP.DeviceConnector.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

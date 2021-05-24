@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace FileSystem
 {
     public class Directory : IFileSystemEntry
     {
+        private readonly IPathHandler pathHandler;
+
         public string Name { get; }
 
         public Directory Parent { get; }
@@ -14,15 +15,19 @@ namespace FileSystem
 
         public bool IsRoot => Parent is null;
 
-        public Directory(string name, Directory parent = null)
+        internal Directory(IPathHandler pathHandler, string name, Directory parent = null)
         {
+            if (pathHandler is null) throw new ArgumentNullException(nameof(pathHandler));
             if (name is null) throw new ArgumentNullException(nameof(name));
 
+            this.pathHandler = pathHandler;
             Name = name;
             Parent = parent;
         }
 
+        public string GetPath() => Parent is null ? Name : pathHandler.Combine(Parent.GetPath(), Name);
 
-        public string GetPath() => Parent is null ? Name : Path.Combine(Parent.GetPath(), Name);
+        public void AddSubdirectory(string name) => Children.Add(new Directory(pathHandler, name, this));
+        public void AddFile(string name) => Files.Add(new File(pathHandler, name, this));
     }
 }

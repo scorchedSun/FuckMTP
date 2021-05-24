@@ -59,6 +59,10 @@
       <Project>{a3aa3286-d2ad-43e4-b2ff-8c14d0eefa65}</Project>
       <Name>CommonExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj">
+      <Project>{3ab63eda-8abd-4ef7-8a7a-4e6a9a614942}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

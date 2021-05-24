@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FileSystem;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -16,6 +17,7 @@ namespace FuckMTP.Core.Tests
         private readonly Mock<IInteractor> interactorMock = new Mock<IInteractor>();
         private readonly Mock<IFileSource> fileSourceMock = new Mock<IFileSource>();
         private readonly Mock<IFileHandler> fileHandlerMock = new Mock<IFileHandler>();
+        private readonly Mock<IPathHandler> pathHandlerMock = new Mock<IPathHandler>();
         private readonly Mock<IFile> fileMock = new Mock<IFile>();
         private readonly Mock<IOperationConfiguration> operationConfigurationMock = new Mock<IOperationConfiguration>();
         private Logic logic;
@@ -43,7 +45,7 @@ namespace FuckMTP.Core.Tests
                         action(progressReporter);
                 });
 
-            logic = new Logic(interactorMock.Object, fileSourceMock.Object, fileHandlerMock.Object);
+            logic = new Logic(interactorMock.Object, fileSourceMock.Object, fileHandlerMock.Object, pathHandlerMock.Object);
         }
 
         #region Functional tests
@@ -54,11 +56,11 @@ namespace FuckMTP.Core.Tests
             using (AutoCleanupFile file = new AutoCleanupFile(Path.GetFullPath(SamplePath), Guid.NewGuid().ToString()))
             {
                 fileSourceMock.Setup(fileSource => fileSource.SelectFiles()).Returns(new List<IFile> { file }.AsReadOnly());
-                fileHandlerMock.Setup(fileHandler => fileHandler.CopyAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string sourcePath, string targetPath) => File.Copy(sourcePath, targetPath));
+                fileHandlerMock.Setup(fileHandler => fileHandler.CopyAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string sourcePath, string targetPath) => System.IO.File.Copy(sourcePath, targetPath));
 
                 logic.Run();
 
-                Assert.IsTrue(File.Exists(Path.Combine(SampleTargetPath, file.Name)));
+                Assert.IsTrue(System.IO.File.Exists(Path.Combine(SampleTargetPath, file.Name)));
             }
         }
 
@@ -69,12 +71,12 @@ namespace FuckMTP.Core.Tests
             {
                 operationConfigurationMock.Setup(operationConfiguration => operationConfiguration.Mode).Returns(Mode.Move);
                 fileSourceMock.Setup(fileSource => fileSource.SelectFiles()).Returns(new List<IFile> { file }.AsReadOnly());
-                fileHandlerMock.Setup(fileHandler => fileHandler.MoveAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string sourcePath, string targetPath) => File.Move(sourcePath, targetPath));
+                fileHandlerMock.Setup(fileHandler => fileHandler.MoveAsync(It.IsAny<string>(), It.IsAny<string>())).Callback((string sourcePath, string targetPath) => System.IO.File.Move(sourcePath, targetPath));
 
                 logic.Run();
 
-                Assert.IsTrue(File.Exists(Path.Combine(SampleTargetPath, file.Name)));
-                Assert.IsFalse(File.Exists(file.Path));
+                Assert.IsTrue(System.IO.File.Exists(Path.Combine(SampleTargetPath, file.Name)));
+                Assert.IsFalse(System.IO.File.Exists(file.Path));
             }
         }
 
@@ -184,7 +186,7 @@ namespace FuckMTP.Core.Tests
             public AutoCleanupFile(string directoryPath, string name)
             {
                 string path = System.IO.Path.Combine(directoryPath, name);
-                File.CreateText(path).Close();
+                System.IO.File.CreateText(path).Close();
 
                 Name = name;
                 Path = path;
@@ -194,12 +196,12 @@ namespace FuckMTP.Core.Tests
             {
                 if (disposed) return;
 
-                if (File.Exists(Path))
-                    File.Delete(Path);
+                if (System.IO.File.Exists(Path))
+                    System.IO.File.Delete(Path);
 
                 string targetFilePath = System.IO.Path.Combine(System.IO.Path.GetFullPath(SampleTargetPath), Name);
-                if (File.Exists(targetFilePath))
-                    File.Delete(targetFilePath);
+                if (System.IO.File.Exists(targetFilePath))
+                    System.IO.File.Delete(targetFilePath);
 
                 disposed = true;
             }

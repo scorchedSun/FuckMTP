@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FuckMTP.DeviceConnector.Contracts
 {
     public interface IDeviceSource
     {
-        IEnumerable<IDevice> GetAvailableDevices();
+        Task<IEnumerable<IDevice>> GetAvailableDevices();
     }
 }

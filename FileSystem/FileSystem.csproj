@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Directory.cs" />
     <Compile Include="File.cs" />
+    <Compile Include="FileSystemEntryFactory.cs" />
     <Compile Include="IFileSystemEntry.cs" />
+    <Compile Include="IPathHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

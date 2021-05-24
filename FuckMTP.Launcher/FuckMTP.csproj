@@ -74,10 +74,6 @@
       <Project>{7E4AFD51-19B7-4AF0-A55A-AD0D844F938F}</Project>
       <Name>FuckMTP.DeviceConnector.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuckMTP.MTPDeviceConnector\FuckMTP.MTPDeviceConnector.csproj">
-      <Project>{2BF0D1CB-A550-4C86-820E-4298B519AAB9}</Project>
-      <Name>FuckMTP.MTPDeviceConnector</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.UI\FuckMTP.UI.csproj">
       <Project>{1090F703-BF95-4E2A-B086-D84A50629011}</Project>
       <Name>FuckMTP.UI</Name>

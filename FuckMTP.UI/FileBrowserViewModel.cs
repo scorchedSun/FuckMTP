@@ -116,9 +116,9 @@ namespace FuckMTP.UI
         private void EnsureContentsAreLoaded(Directory directory)
         {
             if (directory.Children.Count == 0)
-                device.FillSubdirectories(directory);
+                device.FillSubdirectories(directory).GetAwaiter().GetResult();
             if (directory.Files.Count == 0)
-                device.FillFiles(directory);
+                device.FillFiles(directory).GetAwaiter().GetResult();
         }
 
         private void EnsureContentsAreLoadedRecursively(Directory directory)

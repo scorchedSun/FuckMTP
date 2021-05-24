@@ -1,4 +1,5 @@
 ﻿using CommonExtensions;
+using FileSystem;
 using FuckMTP.Core;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace FuckMTP.Core
         private readonly IInteractor interactor;
         private readonly IFileSource fileSource;
         private readonly IFileHandler fileHandler;
+        private readonly IPathHandler pathHandler;
 
-        public Logic(IInteractor interactor, IFileSource fileSource, IFileHandler fileHandler)
+        public Logic(IInteractor interactor, IFileSource fileSource, IFileHandler fileHandler, IPathHandler pathHandler)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.fileSource = fileSource ?? throw new ArgumentNullException(nameof(fileSource));
             this.fileHandler = fileHandler ?? throw new ArgumentNullException(nameof(fileHandler));
+            this.pathHandler = pathHandler ?? throw new ArgumentNullException(nameof(pathHandler));
         }
 
         public void Run()
@@ -63,7 +66,7 @@ namespace FuckMTP.Core
 
             List<string> uniqueDirectoryPaths = GetUniqueDirectoryPathsFrom(files);
             string commonBasePath = uniqueDirectoryPaths.GetCommonPrefix();
-            commonBasePath = commonBasePath.TrimEnd(Path.DirectorySeparatorChar);
+            commonBasePath = commonBasePath.TrimEnd(pathHandler.DirectorySeparator);
             targetPath = targetPath.Trim(Path.DirectorySeparatorChar);
 
             EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
@@ -74,7 +77,7 @@ namespace FuckMTP.Core
                 {
                     string localPath = file.Path.Replace(commonBasePath, targetPath);
 
-                    if (File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
+                    if (System.IO.File.Exists(localPath) && configuration.BehaviorRegardingDuplicates == BehaviorRegardingDuplicates.Ignore)
                         return;
 
                     if (configuration.BehaviorRegardingDuplicates != BehaviorRegardingDuplicates.CopyWithSuffix)
@@ -98,7 +101,7 @@ namespace FuckMTP.Core
             string extension = Path.GetExtension(fileName);
             Regex regex = new Regex($@"{fileNameWithoutExtension}(?: \(\d+\))?\.{extension}", RegexOptions.Compiled);
 
-            int numberOfPotentialDuplicates = Directory.GetFiles(targetPath).Count(filePath => regex.IsMatch(Path.GetFileName(filePath)));
+            int numberOfPotentialDuplicates = System.IO.Directory.GetFiles(targetPath).Count(filePath => regex.IsMatch(Path.GetFileName(filePath)));
 
             return $"{fileNameWithoutExtension} ({++numberOfPotentialDuplicates}).{extension}";
         }
@@ -106,7 +109,7 @@ namespace FuckMTP.Core
         private List<string> GetUniqueDirectoryPathsFrom(IReadOnlyList<IFile> files)
         {
             return files
-                .Select(file => Path.GetDirectoryName(file.Path))
+                .Select(file => pathHandler.GetDirectoryName(file.Path))
                 .Distinct()
                 .OrderBy(path => path.Length)
                 .ToList();
@@ -116,8 +119,8 @@ namespace FuckMTP.Core
         {
             foreach (string subdirectoryPath in localPaths)
             {
-                if (!Directory.Exists(subdirectoryPath))
-                    Directory.CreateDirectory(subdirectoryPath);
+                if (!System.IO.Directory.Exists(subdirectoryPath))
+                    System.IO.Directory.CreateDirectory(subdirectoryPath);
             }
         }
     }

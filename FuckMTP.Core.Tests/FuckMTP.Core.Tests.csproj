@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj">
+      <Project>{3ab63eda-8abd-4ef7-8a7a-4e6a9a614942}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuckMTP.Core\FuckMTP.Core.csproj">
       <Project>{7b492e14-e854-44f6-a377-88a571152eac}</Project>
       <Name>FuckMTP.Core</Name>

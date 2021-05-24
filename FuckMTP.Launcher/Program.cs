@@ -1,11 +1,9 @@
 ﻿using FuckMTP.ADB;
 using FuckMTP.Core;
 using FuckMTP.DeviceConnector.Contracts;
-using FuckMTP.MTPDeviceConnector;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace FuckMTP
 {
@@ -38,11 +36,12 @@ namespace FuckMTP
             Interactor interactor = new Interactor();
             try
             {
-                using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource()))
+                IConfiguration adbConfiguration = new ADBConfiguration();
+                using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource(adbConfiguration)).GetAwaiter().GetResult())
                 using (DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
-                using (FileHandler fileHandler = FileHandler.For(device).With(new ADBConfiguration()))
                 {
-                    Logic logic = new Logic(interactor, fileSource, fileHandler);
+                    FileHandler fileHandler = FileHandler.For(device);
+                    Logic logic = new Logic(interactor, fileSource, fileHandler, new PathHandler());
                     logic.Run();
                 }
             }

@@ -4,8 +4,8 @@ using FuckMTP.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace FuckMTP
 {
@@ -23,9 +23,9 @@ namespace FuckMTP
             return Enumerable.Empty<IFile>().ToList().AsReadOnly();
         }
 
-        internal IDevice SelectDeviceFrom(IDeviceSource source)
+        internal async Task<IDevice> SelectDeviceFrom(IDeviceSource source)
         {
-            IList<IDevice> availableDevices = source.GetAvailableDevices().ToList();
+            IList<IDevice> availableDevices = (await source.GetAvailableDevices().ConfigureAwait(false)).ToList();
 
             if (availableDevices.Count == 0)
                 throw new NoDeviceConnectedException();
