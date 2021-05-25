@@ -62,9 +62,9 @@ namespace FuckMTP
             return null;
         }
 
-        public void RunWithProgressReport(Action<ProgressReporter> action)
+        public void RunWithProgressReport(int numberOfElements, Action<ProgressReporter> action)
         {
-            ProgressWindow progressWindow = new ProgressWindow("Verarbeite Dateien...", action);
+            ProgressWindow progressWindow = new ProgressWindow(numberOfElements, "Verarbeite Dateien...", action);
             progressWindow.ShowDialog();
         }
 

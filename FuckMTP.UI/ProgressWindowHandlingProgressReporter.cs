@@ -7,7 +7,8 @@ namespace FuckMTP.UI
     {
         private readonly ProgressWindow progressWindow;
 
-        public ProgressWindowHandlingProgressReporter(ProgressWindow progressWindow)
+        public ProgressWindowHandlingProgressReporter(int numberOfElements, ProgressWindow progressWindow)
+            : base(numberOfElements)
         {
             this.progressWindow = progressWindow ?? throw new ArgumentNullException(nameof(progressWindow));
             this.progressWindow.Dispatcher.Invoke(() => this.progressWindow.ProgressBar.Maximum = maximum);

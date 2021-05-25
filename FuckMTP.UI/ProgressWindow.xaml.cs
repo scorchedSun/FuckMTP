@@ -11,15 +11,17 @@ namespace FuckMTP.UI
     /// </summary>
     public partial class ProgressWindow : Window
     {
+        private readonly int numberOfElements;
         private readonly Action<ProgressReporter> action;
 
         internal ProgressBar ProgressBar => progressBar;
 
-        public ProgressWindow(string title, Action<ProgressReporter> action)
+        public ProgressWindow(int numberOfElements, string title, Action<ProgressReporter> action)
         {
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("May not be empty", nameof(title));
             if (action is null) throw new ArgumentNullException(nameof(action));
 
+            this.numberOfElements = numberOfElements;
             this.action = action;
 
             InitializeComponent();
@@ -31,7 +33,7 @@ namespace FuckMTP.UI
         {
             await Task.Run(() =>
             {
-                using (ProgressWindowHandlingProgressReporter progressReporter = new ProgressWindowHandlingProgressReporter(this))
+                using (ProgressWindowHandlingProgressReporter progressReporter = new ProgressWindowHandlingProgressReporter(numberOfElements, this))
                     action(progressReporter);
             }).ConfigureAwait(false);
         }

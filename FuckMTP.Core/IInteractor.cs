@@ -12,7 +12,7 @@ namespace FuckMTP.Core
         IOperationConfiguration GetOperationConfiguration();
         void NotifyNoOperationConfigurationProvided();
 
-        void RunWithProgressReport(Action<ProgressReporter> action);
+        void RunWithProgressReport(int numberOfElements, Action<ProgressReporter> action);
 
         void ReportSuccess();
     }

@@ -38,10 +38,10 @@ namespace FuckMTP.Core.Tests
                 .Setup(interactor => interactor.GetOperationConfiguration())
                 .Returns(operationConfigurationMock.Object);
             interactorMock
-                .Setup(interactor => interactor.RunWithProgressReport(It.IsAny<Action<ProgressReporter>>()))
-                .Callback((Action<ProgressReporter> action) =>
+                .Setup(interactor => interactor.RunWithProgressReport(It.IsAny<int>(), It.IsAny<Action<ProgressReporter>>()))
+                .Callback((int numberOfEntries, Action<ProgressReporter> action) =>
                 {
-                    using (ProgressReporter progressReporter = new TestableProgressReporter())
+                    using (ProgressReporter progressReporter = new TestableProgressReporter(numberOfEntries))
                         action(progressReporter);
                 });
 
@@ -166,6 +166,10 @@ namespace FuckMTP.Core.Tests
 
         private sealed class TestableProgressReporter : ProgressReporter
         {
+            public TestableProgressReporter(int maximum) : base(maximum)
+            {
+            }
+
             public static int NumberOfTimesTheProgressChanged { get; private set; }
 
 

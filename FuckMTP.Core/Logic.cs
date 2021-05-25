@@ -71,7 +71,7 @@ namespace FuckMTP.Core
 
             EnsureLocalDirectoriesExist(uniqueDirectoryPaths.ConvertAll(p => p.Replace(commonBasePath, targetPath)));
 
-            interactor.RunWithProgressReport(progressReporter =>
+            interactor.RunWithProgressReport(files.Count, progressReporter =>
             {
                 Parallel.ForEach(files, file =>
                 {
