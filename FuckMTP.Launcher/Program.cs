@@ -37,7 +37,8 @@ namespace FuckMTP
             try
             {
                 IConfiguration adbConfiguration = new ADBConfiguration();
-                using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource(adbConfiguration)).GetAwaiter().GetResult())
+                using (AdbHandler adbHandler = new AdbHandler(adbConfiguration))
+                using (IDevice device = interactor.SelectDeviceFrom(new DeviceSource(adbHandler)).GetAwaiter().GetResult())
                 using (DeviceFileSource fileSource = new DeviceFileSource(interactor, device))
                 {
                     FileHandler fileHandler = FileHandler.For(device);

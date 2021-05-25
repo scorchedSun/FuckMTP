@@ -1,10 +1,8 @@
 ﻿using FuckMTP.Core;
 using System;
-using IDevice = FuckMTP.DeviceConnector.Contracts.IDevice;
-using FluentAdb;
-using FluentAdb.Interfaces;
 using System.Threading.Tasks;
 using System.IO;
+using FuckMTP.DeviceConnector.Contracts;
 
 namespace FuckMTP.ADB
 {

@@ -1,6 +1,4 @@
 ﻿using FileSystem;
-using FluentAdb;
-using FluentAdb.Enums;
 using FluentAdb.Interfaces;
 using FuckMTP.DeviceConnector.Contracts;
 using System.Collections.Generic;
@@ -13,16 +11,12 @@ namespace FuckMTP.ADB
     {
         private readonly IAdb adb;
 
-        public DeviceSource(IConfiguration configuration)
+        public DeviceSource(AdbHandler adbHandler)
         {
-            adb = Adb.New(configuration.PathToExecutable);
+            adb = adbHandler.AdbInstance;
         }
 
         public async Task<IEnumerable<IDevice>> GetAvailableDevices()
-        {
-            if (await adb.GetState().ConfigureAwait(false) == AdbState.Offline)
-                await adb.StartServer().ConfigureAwait(false);
-            return (await adb.GetDevices().ConfigureAwait(false)).Select(deviceInfo => Device.Create(adb, deviceInfo, new FileSystemEntryFactory(new PathHandler())));
-        }
+            => (await adb.GetDevices().ConfigureAwait(false)).Select(deviceInfo => Device.Create(adb, deviceInfo, new FileSystemEntryFactory(new PathHandler())));
     }
 }
